@@ -1,4 +1,5 @@
 import React, { use, useState } from "react";
+import { Link } from "react-router";
 
 const Users = ({ usersData }) => {
   const initialUsers = use(usersData);
@@ -45,6 +46,7 @@ const Users = ({ usersData }) => {
 
   return (
     <div>
+      <h2>Total Users: {users.length}</h2>
       <div>
         <form onSubmit={handleSubmit}>
           <input type="text" name="name" /> <br />
@@ -56,6 +58,8 @@ const Users = ({ usersData }) => {
         {users.map((user) => (
           <p key={user._id}>
             {user.name} : {user.email}{" "}
+            <Link to={`/users/${user._id}`}>Details</Link>
+            <Link to={`/update/${user._id}`}>Edit</Link>
             <button onClick={() => handleDelete(user._id)}>x</button>
           </p>
         ))}

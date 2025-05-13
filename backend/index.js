@@ -35,10 +35,41 @@ async function run() {
       res.send(result);
     });
 
+    // get single user details
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
     // post data in database
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+    // update data
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const user = req.body;
+
+      const updatedDoc = {
+        $set: {
+          name: user.name,
+          email: user.email,
+        },
+      };
+
+      const options = { upsert: true };
+
+      const result = await userCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
       res.send(result);
     });
 
